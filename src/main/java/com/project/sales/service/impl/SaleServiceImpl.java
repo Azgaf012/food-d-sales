@@ -1,5 +1,6 @@
 package com.project.sales.service.impl;
 
+import com.project.sales.dto.SaleDetailDto;
 import com.project.sales.entity.Customer;
 import com.project.sales.entity.Sale;
 import com.project.sales.entity.SaleDetail;
@@ -8,6 +9,7 @@ import com.project.sales.service.SaleDetailService;
 import com.project.sales.service.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -21,14 +23,15 @@ public class SaleServiceImpl implements SaleService {
     @Autowired private SaleDetailService saleDetailService;
 
     @Override
-    public Sale registerSale(List<SaleDetail> saleDetailList, Customer customer) {
+    @Transactional
+    public Sale registerSale(List<SaleDetailDto> saleDetailList, Customer customer) {
         Sale sale = Sale.builder()
                 .date(new Date())
                 .customer(customer)
                 .total(this.calculateTotal(saleDetailList))
                 .build();
         Sale saleDB = saleRepository.save(sale);
-        saleDetailList.stream().map(saleDetail -> saleDetailService.registerSaleDetail(saleDetail,saleDB));
+        saleDetailService.registerSaleDetail(saleDetailList,saleDB);
         return saleDB;
     }
 
@@ -37,9 +40,9 @@ public class SaleServiceImpl implements SaleService {
         return null;
     }
 
-    private BigDecimal calculateTotal(List<SaleDetail> saleDetailList){
-        return saleDetailList.stream().map(saleDetail -> {
-            return new BigDecimal((saleDetail.getPrice() * saleDetail.getCant()));
-        }).reduce(BigDecimal.ZERO, BigDecimal::add);
+    private BigDecimal calculateTotal(List<SaleDetailDto> saleDetailList){
+        return saleDetailList.stream().map(saleDetail -> new BigDecimal(String.valueOf((saleDetail.getPrice().multiply(new BigDecimal(saleDetail.getCant()))))))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        /*hola soy diego*/
     }
 }

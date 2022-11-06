@@ -16,5 +16,5 @@ import java.util.List;
 @Builder
 public class SaleDto {
     private Customer customer;
-    private List<SaleDetail> saleDetailList;
-}
+     private List<SaleDetailDto> saleDetailList;
+ }

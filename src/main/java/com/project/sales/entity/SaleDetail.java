@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -24,7 +25,7 @@ public class SaleDetail {
     @ManyToOne(fetch = FetchType.EAGER)
     private Sale sale;
 
-    private Long price;
+    private BigDecimal price;
     private Integer cant;
 
 
