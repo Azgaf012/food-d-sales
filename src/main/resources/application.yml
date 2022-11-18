@@ -7,3 +7,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+app:
+  config:
+    apiInventary: http://localhost:8081
+    kardexOutEndpoint: /Kardex/register-out

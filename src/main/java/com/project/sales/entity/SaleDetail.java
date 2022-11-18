@@ -26,7 +26,7 @@ public class SaleDetail {
     private Sale sale;
 
     private BigDecimal price;
-    private Integer cant;
+    private Double cant;
 
 
 }
